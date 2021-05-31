@@ -1,0 +1,37 @@
+{
+  "name": "@kingsway-digital/craftercms-react",
+  "version": "0.0.1",
+  "description": "Convenient React components for CrafterCMS projects.",
+  "scripts": {
+    "clean": "rimraf *.js *.js.map",
+    "build": "babel src --out-dir . --source-maps"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kingsway-Digital/craftercms-react.git"
+  },
+  "keywords": [
+    "craftercms",
+    "crafter",
+    "cms",
+    "javascript",
+    "react",
+    "js"
+  ],
+  "author": "Tony Field <tony@kingsway.digital>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Kingsway-Digital/craftercms-react/issues"
+  },
+  "homepage": "https://github.com/Kingsway-Digital/craftercms-react#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.14.3",
+    "@babel/core": "^7.14.3",
+    "@babel/preset-env": "^7.14.4",
+    "@babel/preset-react": "^7.13.13",
+    "rimraf": "^3.0.2"
+  },
+  "dependencies": {
+    "@craftercms/ice": "^1.2.4"
+  }
+}
