@@ -32,6 +32,7 @@
     "rimraf": "^3.0.2"
   },
   "dependencies": {
+    "@craftercms/classes": "^1.2.4",
     "@craftercms/ice": "^1.2.4"
   }
 }

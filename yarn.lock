@@ -936,6 +936,15 @@
     "@babel/helper-validator-identifier" "^7.14.0"
     to-fast-properties "^2.0.0"
 
+"@craftercms/classes@^1.2.4":
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/@craftercms/classes/-/classes-1.2.4.tgz#4c1defc330725afed363252a28113a5fefeb06be"
+  integrity sha512-eoibwrMPS19E6JBa0Jb2RhLQ/jhJOYiSLhcv/m/7JbpEUCjxKegHmrvtAZqx8fDkkytO0jY6sGlI7WCaaNUTKw==
+  dependencies:
+    "@craftercms/models" "1.2.4"
+    "@craftercms/utils" "1.2.4"
+    url-search-params-polyfill "^5.0.0"
+
 "@craftercms/ice@^1.2.4":
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/@craftercms/ice/-/ice-1.2.4.tgz#e08cf1149ae33896fe0f672a10d026a8b06d35a4"
@@ -947,6 +956,11 @@
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/@craftercms/models/-/models-1.2.4.tgz#0c90a276e86b00487094b8177a007de5ac1f0857"
   integrity sha512-X/nEiZgNmFgP+d5gJkmNn0lCPbohiCLoapU5spcBq4otOIFv7Cv/4sZwjm1Sv8cyMS7k8UsU6Y8Ob3Rn1QemGw==
+
+"@craftercms/utils@1.2.4":
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/@craftercms/utils/-/utils-1.2.4.tgz#90f758a59e6bd940743c4d077a37aad862b1b27c"
+  integrity sha512-KrEQlf6CXSXMpYcOm+BojW2BqO+INJJn/OMBI47T2nJXeGXZNZ6ayJ26ZVEnAJMBsjIBR0LRmz/uC4zz0uMyew==
 
 "@nicolo-ribaudo/chokidar-2@2.1.8-no-fsevents":
   version "2.1.8-no-fsevents"
@@ -2244,6 +2258,11 @@ urix@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/urix/-/urix-0.1.0.tgz#da937f7a62e21fec1fd18d49b35c2935067a6c72"
   integrity sha1-2pN/emLiH+wf0Y1Js1wpNQZ6bHI=
+
+url-search-params-polyfill@^5.0.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/url-search-params-polyfill/-/url-search-params-polyfill-5.1.0.tgz#f0405dcc2e921bf7f5fdf8c4e616f1e8088ef31b"
+  integrity sha512-yjFY7uw2xRf9e8Mg4ZVkZwtp8dMCC4cbBkEIZiTDpuSY2WJ9+Quw0wRhxncv32qaMQwmBQT+P847rO8PrFhhDA==
 
 use@^3.1.0:
   version "3.1.1"
