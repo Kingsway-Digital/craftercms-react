@@ -24,7 +24,7 @@ export const Spa = (props) => {
       ? baseUrlFromEnv
       : "";
     crafterConf.configure({ baseUrl: baseUrl, site: site });
-    console.debug("Crafter SDK configured", crafterConf.config);
+    console.debug("Crafter SDK configured", crafterConf.getConfig());
     return children;
   }
 };
