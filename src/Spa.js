@@ -6,26 +6,32 @@ const baseUrlFromCrafter = extractConfigFromFreemarker("b", "root");
 const siteNameFromEnv = process.env.REACT_APP_STUDIO_SITE_NAME;
 const siteNameFromCrafter = extractConfigFromFreemarker("s", "root");
 
+if (!siteNameFromEnv && !siteNameFromCrafter) {
+  console.error("Site name not set");
+  throw Error("Configuration error");
+} else if (siteNameFromCrafter && !baseUrlFromCrafter) {
+  // if crafter provided the site it better provide the base URL
+  console.error("Base url not set");
+  throw Error("Configuration error");
+} else {
+  const site = siteNameFromCrafter ? siteNameFromCrafter : siteNameFromEnv;
+  const baseUrl = baseUrlFromCrafter
+    ? baseUrlFromCrafter
+    : baseUrlFromEnv
+    ? baseUrlFromEnv
+    : "";
+  crafterConf.configure({ baseUrl: baseUrl, site: site });
+  console.debug("Crafter SDK configured", crafterConf.getConfig());
+}
+
 export const Spa = (props) => {
   const { children } = props;
-
-  if (!siteNameFromEnv && !siteNameFromCrafter) {
-    console.error("Site name not set");
-    return "Configuration error";
-  } else if (siteNameFromCrafter && !baseUrlFromCrafter) {
-    // if crafter provided the site it better provide the base URL
-    console.error("Base url not set");
-    return "Configuration error";
-  } else {
-    const site = siteNameFromCrafter ? siteNameFromCrafter : siteNameFromEnv;
-    const baseUrl = baseUrlFromCrafter
-      ? baseUrlFromCrafter
-      : baseUrlFromEnv
-      ? baseUrlFromEnv
-      : "";
-    crafterConf.configure({ baseUrl: baseUrl, site: site });
-    console.debug("Crafter SDK configured", crafterConf.getConfig());
+  if (crafterConf.getConfig().site && crafterConf.getConfig().site.length > 0) {
+    console.log("Site from config", crafterConf.getConfig().site);
     return children;
+  } else {
+    console.error("Site not found in configuration.");
+    return "Configuration error";
   }
 };
 
