@@ -34,7 +34,6 @@ export const getCrafterBaseUrl = () => crafterConfig.baseUrl;
 export const Spa = (props) => {
   const { children } = props;
   if (crafterConf.getConfig().site && crafterConf.getConfig().site.length > 0) {
-    console.log("Site from config", crafterConf.getConfig().site);
     return children;
   } else {
     console.error("Site not found in configuration.");

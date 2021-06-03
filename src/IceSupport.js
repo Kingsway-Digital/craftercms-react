@@ -29,12 +29,12 @@ export function IceSupport(props) {
                         setIsLoggedIn(true)
                         addAuthoringSupport()
                             .then(() => {
-                              console.log('Authoring tools have loaded and are ready to use by user {' + result.user.username + '}.');
+                              console.debug('Authoring tools have loaded and are ready to use by user {' + result.user.username + '}.');
                               setIsAuthoring(isAuthSvrResp);
                               setLoading(false);
                             })
                             .catch((err) => {
-                              console.log("Failure adding authoring support: " + JSON.stringify(err))
+                              console.error("Failure adding authoring support: " + JSON.stringify(err))
                             });
                       } else {
                         // console.log("User is not logged in");
@@ -42,7 +42,7 @@ export function IceSupport(props) {
                       }
                     },
                     (error) => {
-                      console.log("Failure checking for active user: " + JSON.stringify(error));
+                      console.error("Failure checking for active user: " + JSON.stringify(error));
                     }
                 )
           } else {

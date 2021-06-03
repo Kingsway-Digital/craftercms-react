@@ -5,27 +5,37 @@ import { CognitoUserPool } from "amazon-cognito-identity-js";
 import { config as AWSConfig, CognitoIdentityCredentials } from "aws-sdk";
 
 export function CognitoCallback(props) {
-  const [, update] = useGlobalContext();
-  const { onSuccessInclude, onFailureInclude } = props;
+  const [{ user }, update] = useGlobalContext();
+  const { onSuccessInclude, onFailureInclude, onLoadInclude } = props;
   const [cognitoSession, setCognitoSession] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
-    parseCognitoCallbackUrl(window.location.href)
-      .then((session) => {
-        console.debug("Parsed callback got cognitoSession", session);
-        setCognitoSession(session);
-        const cu = asCognitoUser(session);
-        update({ user: cu });
-      })
-      .catch((e) => {
-        console.error("Failure parsing callback url", e);
-      });
+    if (!user) {
+      setLoading(true);
+      parseCognitoCallbackUrl(window.location.href)
+        .then((session) => {
+          console.debug("Parsed callback got cognitoSession", session);
+          setCognitoSession(session);
+          const cu = asCognitoUser(session);
+          update({ user: cu });
+          setLoading(false);
+        })
+        .catch((e) => {
+          console.error("Failure parsing callback url", e);
+          setLoading(false);
+        });
+    }
   }, []);
 
-  if (cognitoSession) {
-    const Include = onSuccessInclude;
-    return onSuccessInclude;
+  if (loading) {
+    return onLoadInclude ? onLoadInclude : "";
   } else {
-    return onFailureInclude;
+    if (cognitoSession) {
+      return onSuccessInclude;
+    } else {
+      return onFailureInclude;
+    }
   }
 }
 
@@ -51,10 +61,10 @@ const windowurl = window.location.href;
 const arr = windowurl.split("/");
 const base = arr[0] + "//" + arr[2];
 const callbackUrl = () => {
-  return base + "/callback";
+  return base + process.env.REACT_APP_COGNITO_CALLBACK_PATH;
 };
 const signoutUrl = () => {
-  return base + "/signout";
+  return base + process.env.REACT_APP_COGNITO_SIGNOUT_PATH;
 };
 
 const createCognitoAuth = () => {
@@ -85,21 +95,25 @@ const createCognitoUser = () => {
 };
 
 export const getCognitoSignInUri = () => {
-  const signinUri = `${process.env.REACT_APP_COGNITO_URL}/login?scopes=${
+  return `${process.env.REACT_APP_COGNITO_URL}/login?scopes=${
     process.env.REACT_APP_COGNITO_SCOPES
   }&response_type=code&client_id=${
     process.env.REACT_APP_COGNITO_APP_CLIENT
   }&redirect_uri=${callbackUrl()}`;
-  return signinUri;
 };
 
 export const getCognitoSignUpUri = () => {
-  const signupUri = `${process.env.REACT_APP_COGNITO_URL}/signup?scopes=${
+  return `${process.env.REACT_APP_COGNITO_URL}/signup?scopes=${
     process.env.REACT_APP_COGNITO_SCOPES
   }&response_type=code&client_id=${
     process.env.REACT_APP_COGNITO_APP_CLIENT
   }&redirect_uri=${callbackUrl()}`;
-  return signupUri;
+};
+
+export const getCognitoSignOutUri = () => {
+  return `${process.env.REACT_APP_COGNITO_URL}/logout?client_id=${
+    process.env.REACT_APP_COGNITO_APP_CLIENT
+  }&logout_uri=${signoutUrl()}`;
 };
 
 const parseCognitoCallbackUrl = (fullCallbackUrl) => {
