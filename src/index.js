@@ -1,5 +1,5 @@
 export { TestBox } from "./TestBox";
-export { Spa } from "./Spa";
+export { Spa, getCrafterSite, getCrafterBaseUrl } from "./Spa";
 export { GlobalContextProvider } from "./GlobalContext";
 export * from "./GlobalContext";
 export {
