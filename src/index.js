@@ -2,8 +2,9 @@ export { Spa, getCrafterSite, getCrafterBaseUrl } from "./Spa";
 export { GlobalContextProvider } from "./GlobalContext";
 export * from "./GlobalContext";
 export {
+  CognitoLoginCallback,
+  CognitoLogoutCallback,
   CognitoUserRequired,
-  CognitoCallback,
   getCognitoSignInUri,
   getCognitoSignUpUri,
   getCognitoSignOutUri,

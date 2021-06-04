@@ -3,8 +3,12 @@ import { useGlobalContext } from "./GlobalContext";
 import { CognitoAuth } from "amazon-cognito-auth-js/dist/amazon-cognito-auth";
 import { CognitoUserPool } from "amazon-cognito-identity-js";
 import { config as AWSConfig, CognitoIdentityCredentials } from "aws-sdk";
+import {
+  setBearerTokenInCrafterClient,
+  clearBearerTokenInCrafterClient,
+} from "./Spa";
 
-export function CognitoCallback(props) {
+export function CognitoLoginCallback(props) {
   const [{ user }, update] = useGlobalContext();
   const { onSuccessInclude, onFailureInclude, onLoadInclude } = props;
   const [cognitoSession, setCognitoSession] = useState(null);
@@ -19,6 +23,7 @@ export function CognitoCallback(props) {
           setCognitoSession(session);
           const cu = asCognitoUser(session);
           update({ user: cu });
+          setBearerTokenInCrafterClient(session.idToken.jwtToken);
           setLoading(false);
         })
         .catch((e) => {
@@ -39,6 +44,29 @@ export function CognitoCallback(props) {
   }
 }
 
+export function CognitoLogoutCallback(props) {
+  const [{ user }, update] = useGlobalContext();
+  const { onSuccessInclude, onFailureInclude, onLoadInclude } = props;
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  useEffect(() => {
+    setLoading(true);
+    clearBearerTokenInCrafterClient();
+    update({ user: null });
+    setLoading(false);
+  }, [user, loading]);
+
+  if (loading) {
+    return onLoadInclude ? onLoadInclude : "";
+  } else {
+    if (error) {
+      console.error("Failure in CognitoLogoutCallback", error);
+      return onFailureInclude;
+    } else {
+      return onSuccessInclude;
+    }
+  }
+}
 export function CognitoUserRequired(props) {
   const { children } = props;
   const [cognitoSession, setCognitoSession] = useState(null);
@@ -48,6 +76,7 @@ export function CognitoUserRequired(props) {
       getCognitoUser()
         .then((cu) => {
           update({ user: cu });
+          setBearerTokenInCrafterClient(session.idToken.jwtToken);
         })
         .catch((e) => {
           console.error("Failed to locate user: " + e);
@@ -141,7 +170,8 @@ const getCognitoUser = () => {
         reject(new Error("Failure getting Cognito session: " + error));
         return null;
       }
-      // console.debug("Retrieved user session:", session);
+
+      console.debug("Retrieved user session:", session);
       resolve(asCognitoUser(session));
     });
   });

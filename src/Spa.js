@@ -6,7 +6,7 @@ const baseUrlFromCrafter = extractConfigFromFreemarker("b", "root");
 const siteNameFromEnv = process.env.REACT_APP_STUDIO_SITE_NAME;
 const siteNameFromCrafter = extractConfigFromFreemarker("s", "root");
 
-const crafterConfig = {site: null, baseUrl: null};
+const crafterConfig = { site: null, baseUrl: null };
 
 if (!siteNameFromEnv && !siteNameFromCrafter) {
   console.error("Site name not set");
@@ -39,6 +39,21 @@ export const Spa = (props) => {
     console.error("Site not found in configuration.");
     return "Configuration error";
   }
+};
+
+export const setBearerTokenInCrafterClient = (token) => {
+  // console.debug("Adding bearer token to Crafter client");
+  if (token) {
+    const config = crafterConf.getConfig();
+    if (config.site && config.site.length > 0) {
+      crafterConf.configure({ headers: { Authentication: "Bearer " + token } });
+    }
+  }
+};
+
+export const clearBearerTokenInCrafterClient = () => {
+  // console.debug("Clearing bearer token from Crafter client");
+  crafterConf.configure({ headers: { Authentication: "" } });
 };
 
 /**
