@@ -29,7 +29,7 @@ yarn add @kingsway/craftercms-react
 
 Initialize the `crafterConf` object in a single page application.
 
-This object will look in the document for an element named `root`. Within that element, it will look in its dataset for an attribute entitled `b`, which corresponds to the Crafter CMS URL Base. (Typical values could be `http://localhost:8080`, or `https://example.com`). If it does not locate a value in that setting, or, if that setting is an un-substituted freemarker tag (i.e. starting with `'${'` and ending with `'}'`), then it is assumed that the app is not running within the Crafter freemarker context and instead the urlbase is sought in an app environment variable called `REACT_APP_STUDIO_BASE_URL`. Secondly, the app will seek a dataset param called `s` in the `root` element, and if not found (or found to be an un-substituted freemarker string), then the environment variable `REACT_APP_STUDIO_SITE_NAME` is checked. This value corresponds to the Crafter site name.
+This object will look in the document for an element named `root`. Within that element, it will look in its dataset for an attribute entitled `b`, which corresponds to the Crafter CMS URL Base. (Typical values could be `http://localhost:8080`, or `https://example.com`). If it does not locate a value in that setting, or, if that setting is an un-substituted freemarker tag (i.e. starting with `'${'` and ending with `'}'`), then it is assumed that the app is not running within the Crafter CMS freemarker context and instead the urlbase is sought in an app environment variable called `REACT_APP_STUDIO_BASE_URL`. Secondly, the app will seek a dataset param called `s` in the `root` element, and if not found (or found to be an un-substituted freemarker string), then the environment variable `REACT_APP_STUDIO_SITE_NAME` is checked. This value corresponds to the Crafter CMS site name.
 
 Once these parameters are loaded, the `crafterConf` object is configured with these values.
 
@@ -39,7 +39,7 @@ Site is required.
 
 These values are loaded before the app is rendered. As such, this component will not render children if configuration has failed, and instead will render a configuration error message. If properly configured, the component's children are rendered.
 
-Typically a Crafter freemarker template for a SPA would include the `index.html` file of a react SPA. It might look like this:
+Typically a Crafter CMS freemarker template for a SPA would include the `index.html` file of a react SPA. It might look like this:
 
 ```html
 ...
@@ -53,7 +53,7 @@ Typically a Crafter freemarker template for a SPA would include the `index.html`
 </body>
 ```
 
-where the `crafterSpaBaseUrl` is set in a site-specific groovy filter, and `siteName` is set automatically by Crafter.
+where the `crafterSpaBaseUrl` is set in a site-specific groovy filter, and `siteName` is set automatically by Crafter CMS.
 
 Typical usage of the Spa tag itself looks like this:
 
