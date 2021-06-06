@@ -165,9 +165,11 @@ Setting values:
 ```javascript
 const [{ user, debug, nav }, update] = useGlobalContext();
 
+let myNavObj = {}
+...
 update({
   debug: false,
-  nav: myNavObj,
+  nav: myNavObj
 });
 ```
 
