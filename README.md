@@ -419,3 +419,11 @@ import {getCognitoSignUpUri} from "@kingsway/craftercms-react"
 ## Feedback Welcome
 
 This component is currently in active development and feedback is welcome in the git repository.
+
+## Development Support
+
+To contribute to this package, upate this project's `package.json` file to build to your favourite working directory, and then run `yarn dev`. Then, in your project that relies on the package, remove the version-specific dependency in your project's `package.json` and replace it with a link to the package instead, like this:
+
+```javascript
+      "@kingsway/craftercms-react": "link:/Users/tfield/Projects/npmjs/kingsway/dev-build",
+```
