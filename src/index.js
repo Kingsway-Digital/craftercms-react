@@ -8,4 +8,5 @@ export {
   getCognitoSignUpUri,
   getCognitoSignOutUri,
 } from "./CognitoUserInfo";
+export { cognitoConfig } from "./cognitoConfig.js";
 export { IceSupport, usePencil, useDnD, useIceAllowed } from "./IceSupport";

@@ -7,8 +7,10 @@ import {
   setBearerTokenInCrafterClient,
   clearBearerTokenInCrafterClient,
 } from "./Spa";
+import { cognitoConfig, cognitoConfig as configuration } from "./cognitoConfig";
 
 export function CognitoLoginCallback(props) {
+  ensureConfigured();
   const [{ user }, update] = useGlobalContext();
   const { onSuccessInclude, onFailureInclude, onLoadInclude } = props;
   const [cognitoSession, setCognitoSession] = useState(null);
@@ -45,10 +47,12 @@ export function CognitoLoginCallback(props) {
 }
 
 export function CognitoLogoutCallback(props) {
+  ensureConfigured();
   const [{ user }, update] = useGlobalContext();
   const { onSuccessInclude, onFailureInclude, onLoadInclude } = props;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
   useEffect(() => {
     setLoading(true);
     clearBearerTokenInCrafterClient();
@@ -67,7 +71,9 @@ export function CognitoLogoutCallback(props) {
     }
   }
 }
+
 export function CognitoUserRequired(props) {
+  ensureConfigured();
   const { children } = props;
   const [cognitoSession, setCognitoSession] = useState(null);
   const [{ user }, update] = useGlobalContext();
@@ -82,67 +88,70 @@ export function CognitoUserRequired(props) {
           console.error("Failed to locate user: " + e);
         });
     }
-  }, [user]);
+  }, [user, configuration]);
   return user ? children : null;
 }
 
-const windowurl = window.location.href;
-const arr = windowurl.split("/");
-const base = arr[0] + "//" + arr[2];
-const callbackUrl = () => {
-  return base + process.env.REACT_APP_COGNITO_CALLBACK_PATH;
+export const getCognitoSignInUri = () => {
+  ensureConfigured();
+  return `${configuration.getConfig().url}/login?scopes=${
+    configuration.getConfig().scopes
+  }&response_type=code&client_id=${
+    configuration.getConfig().appClientId
+  }&redirect_uri=${base() + configuration.getConfig().callbackPath}`;
 };
-const signoutUrl = () => {
-  return base + process.env.REACT_APP_COGNITO_SIGNOUT_PATH;
+
+export const getCognitoSignUpUri = () => {
+  ensureConfigured();
+  return `${configuration.getConfig().url}/signup?scopes=${
+    configuration.getConfig().scopes
+  }&response_type=code&client_id=${
+    configuration.getConfig().appClientId
+  }&redirect_uri=${base() + configuration.getConfig().callbackPath}`;
+};
+
+export const getCognitoSignOutUri = () => {
+  ensureConfigured();
+  return `${configuration.getConfig().url}/logout?client_id=${
+    configuration.getConfig().appClientId
+  }&logout_uri=${base() + configuration.getConfig().signoutPath}`;
+};
+
+const ensureConfigured = () => {
+  if (configuration.isConfigured()) return;
+  throw Error("Cognito settings not configured");
+};
+
+const base = () => {
+  const windowUrlParts = window.location.href.split("/");
+  return windowUrlParts[0] + "//" + windowUrlParts[2];
 };
 
 const createCognitoAuth = () => {
-  const appWebDomain = process.env.REACT_APP_COGNITO_URL.replace(
-    "https://",
-    ""
-  ).replace("http://", "");
+  const appWebDomain = configuration
+    .getConfig()
+    .url.replace("https://", "")
+    .replace("http://", "");
   const auth = new CognitoAuth({
-    UserPoolId: process.env.REACT_APP_COGNITO_USER_POOL,
-    ClientId: process.env.REACT_APP_COGNITO_APP_CLIENT,
+    UserPoolId: configuration.getConfig().userPoolId,
+    ClientId: configuration.getConfig().appClientId,
     AppWebDomain: appWebDomain,
-    TokenScopesArray: process.env.REACT_APP_COGNITO_SCOPES.split("+"),
-    RedirectUriSignIn: callbackUrl(),
-    RedirectUriSignOut: signoutUrl(),
+    TokenScopesArray: configuration.getConfig().scopes.split("+"),
+    RedirectUriSignIn: base() + configuration.getConfig().callbackPath,
+    RedirectUriSignOut: base() + configuration.getConfig().signoutPath,
   });
   return auth;
 };
 
 const createCognitoUserPool = () =>
   new CognitoUserPool({
-    UserPoolId: process.env.REACT_APP_COGNITO_USER_POOL,
-    ClientId: process.env.REACT_APP_COGNITO_APP_CLIENT,
+    UserPoolId: configuration.getConfig().userPoolId,
+    ClientId: configuration.getConfig().appClientId,
   });
 
 const createCognitoUser = () => {
   const pool = createCognitoUserPool();
   return pool.getCurrentUser();
-};
-
-export const getCognitoSignInUri = () => {
-  return `${process.env.REACT_APP_COGNITO_URL}/login?scopes=${
-    process.env.REACT_APP_COGNITO_SCOPES
-  }&response_type=code&client_id=${
-    process.env.REACT_APP_COGNITO_APP_CLIENT
-  }&redirect_uri=${callbackUrl()}`;
-};
-
-export const getCognitoSignUpUri = () => {
-  return `${process.env.REACT_APP_COGNITO_URL}/signup?scopes=${
-    process.env.REACT_APP_COGNITO_SCOPES
-  }&response_type=code&client_id=${
-    process.env.REACT_APP_COGNITO_APP_CLIENT
-  }&redirect_uri=${callbackUrl()}`;
-};
-
-export const getCognitoSignOutUri = () => {
-  return `${process.env.REACT_APP_COGNITO_URL}/logout?client_id=${
-    process.env.REACT_APP_COGNITO_APP_CLIENT
-  }&logout_uri=${signoutUrl()}`;
 };
 
 const parseCognitoCallbackUrl = (fullCallbackUrl) => {
@@ -178,14 +187,16 @@ const getCognitoUser = () => {
 };
 
 const asCognitoUser = (session) => {
-  const poolUrl = `${process.env.REACT_APP_COGNITO_URL}/${process.env.REACT_APP_COGNITO_USER_POOL}`;
+  const poolUrl = `${configuration.getConfig().url}/${
+    configuration.getConfig().uesrPoolId
+  }`;
   const credentials = new CognitoIdentityCredentials({
     Logins: {
       [poolUrl]: session.idToken.jwtToken,
     },
   });
 
-  const cu = new CognitoUser();
+  const cu = {};
   cu.id = session.idToken.payload["cognito:username"];
   cu.email = session.idToken.payload.email;
   cu.firstname = session.idToken.payload["given_name"];
@@ -193,11 +204,3 @@ const asCognitoUser = (session) => {
   cu.credentials = credentials;
   return cu;
 };
-
-export class CognitoUser {
-  id = null;
-  firstname = null;
-  lastname = null;
-  email = null;
-  credentials = null;
-}
