@@ -75,8 +75,6 @@ ReactDOM.render(
 
 where `<App>` is the root component of your application.
 
----
-
 ### Component: IceSupport
 
 This component initializes Crafter CMS's in-context editing tools and provides convenient hooks that facilitate component development.
@@ -118,8 +116,6 @@ useEffect(() => {
 ```
 
 This must be used inside the `<Spa>` context.
-
----
 
 ### Component: GlobalContextProvider
 
@@ -175,8 +171,6 @@ update({
 });
 ```
 
----
-
 ### AWS Cognito Login Configuration
 
 This feature exposes several components: `CognitoLoginCallback`, `CognitoLogoutCallback`, and `CognitoUserRequired`. In addition, it exposes three convenience functions: `getCognitoSignInUri`, `getCognitoSignUpUri`, and `getCognitoSignOutUri`.
@@ -226,8 +220,6 @@ such that the cognitoConfig object contains the following values:
     'signoutPath': 'the signout path, used after Cognito signout, so that app signout can be completed by the app itself.'
   }
 ```
-
----
 
 ### Component: CognitoLoginCallback
 
@@ -283,8 +275,6 @@ export default function LoginCallback() {
 }
 ```
 
----
-
 ### Component: CognitoLogoutCallback
 
 This component logs the user out of Cognito (clearing the bearer token from the `crafterConf`), and logs the user out of the Spa (clearing the `user` object from the global context).
@@ -317,8 +307,6 @@ export default function LogoutCallback(props) {
   );
 }
 ```
-
----
 
 ### Component: CognitoUserRequired
 
@@ -374,8 +362,6 @@ export default function AppSwitch() {
 
 ```
 
----
-
 ### getCognitoSignInUri
 
 This function returns the Cognito sign-in URI, configured as appropriate given the configuration of this component. The URL is as defined by AWS Cognito, and is the `/login` endpoint on your Cognito domain, plus parameters corresponding to `scope`, `response_type=code`, the app `client_id`, and the callback `redirect_uri`.
@@ -394,8 +380,6 @@ import {getCognitoSignInUri} from "@kingsway/craftercms-react"
 
 ```
 
----
-
 ### getCognitoSignUpUri
 
 This function returns the Cognito create account URI, configured as appropriate given the configuration of this component. The URL is as defined by AWS Cognito, and is the `/signup` endpoint on your Cognito domain, plus parameters corresponding to `scope`, `response_type=code`, the app `client_id`, and the callback `redirect_uri`.
@@ -413,8 +397,6 @@ import {getCognitoSignUpUri} from "@kingsway/craftercms-react"
   }}>Create Account</Button>
 
 ```
-
----
 
 ### getCognitoSignOutUri
 
