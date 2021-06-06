@@ -14,9 +14,7 @@ export function useGlobalContext() {
 export function GlobalContextProvider(props) {
 
     const [state, setState] = useSpreadState({
-        notifications: [],
         debug: process.env.REACT_APP_DEBUG === "true",
-        appinfo: null,
         user: null
     });
 

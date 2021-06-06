@@ -1,5 +1,5 @@
 {
-  "name": "@kingsway-digital/craftercms-react",
+  "name": "@kingsway/craftercms-react",
   "version": "0.0.1",
   "description": "Convenient React components for CrafterCMS projects.",
   "scripts": {
