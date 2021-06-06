@@ -39,7 +39,7 @@
   },
   "peerDependencies": {
     "react-router-dom": "^5.2.0",
-    "@craftercms/classes": "^1.2.5",
-    "@craftercms/ice": "^1.2.5"
+    "@craftercms/classes": "^1.2.6",
+    "@craftercms/ice": "^1.2.6"
   }
 }

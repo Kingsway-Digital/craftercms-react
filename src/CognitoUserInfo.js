@@ -19,7 +19,7 @@ export function CognitoLoginCallback(props) {
       setLoading(true);
       parseCognitoCallbackUrl(window.location.href)
         .then((session) => {
-          console.debug("Parsed callback got cognitoSession", session);
+          // console.debug("Parsed callback got cognitoSession", session);
           setCognitoSession(session);
           const cu = asCognitoUser(session);
           update({ user: cu });
@@ -171,7 +171,7 @@ const getCognitoUser = () => {
         return null;
       }
 
-      console.debug("Retrieved user session:", session);
+      // console.debug("Retrieved user session:", session);
       resolve(asCognitoUser(session));
     });
   });

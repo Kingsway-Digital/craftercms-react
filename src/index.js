@@ -1,6 +1,5 @@
-export { Spa, getCrafterSite, getCrafterBaseUrl } from "./Spa";
-export { GlobalContextProvider } from "./GlobalContext";
-export * from "./GlobalContext";
+export { Spa } from "./Spa";
+export { GlobalContextProvider, useGlobalContext } from "./GlobalContext";
 export {
   CognitoLoginCallback,
   CognitoLogoutCallback,
@@ -9,6 +8,4 @@ export {
   getCognitoSignUpUri,
   getCognitoSignOutUri,
 } from "./CognitoUserInfo";
-export * from "./CognitoUserInfo";
-export { IceSupport } from "./IceSupport";
-export * from "./IceSupport";
+export { IceSupport, usePencil, useDnD, useIceAllowed } from "./IceSupport";

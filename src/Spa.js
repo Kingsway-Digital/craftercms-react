@@ -25,7 +25,7 @@ if (!siteNameFromEnv && !siteNameFromCrafter) {
     ? baseUrlFromEnv
     : "";
   crafterConf.configure(crafterConfig);
-  console.debug("Crafter SDK configured", crafterConf.getConfig());
+  // console.debug("Crafter SDK configured", crafterConf.getConfig());
 }
 
 export const getCrafterSite = () => crafterConfig.site;
