@@ -188,7 +188,7 @@ const getCognitoUser = () => {
 
 const asCognitoUser = (session) => {
   const poolUrl = `${configuration.getConfig().url}/${
-    configuration.getConfig().uesrPoolId
+    configuration.getConfig().userPoolId
   }`;
   const credentials = new CognitoIdentityCredentials({
     Logins: {
@@ -196,11 +196,11 @@ const asCognitoUser = (session) => {
     },
   });
 
-  const cu = {};
-  cu.id = session.idToken.payload["cognito:username"];
-  cu.email = session.idToken.payload.email;
-  cu.firstname = session.idToken.payload["given_name"];
-  cu.lastname = session.idToken.payload["family_name"];
+  let cu = {};
+  for (const prop in session.idToken.payload) {
+    cu[prop] = session.idToken.payload[prop];
+  }
+  // should we allow developer to do custom mapping?
   cu.credentials = credentials;
   return cu;
 };

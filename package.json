@@ -1,6 +1,6 @@
 {
   "name": "@kingsway/craftercms-react",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Convenient React components for CrafterCMS projects.",
   "scripts": {
     "clean": "rimraf *.js *.js.map",

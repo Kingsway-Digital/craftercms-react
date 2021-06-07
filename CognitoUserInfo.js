@@ -255,15 +255,17 @@ var getCognitoUser = function getCognitoUser() {
 };
 
 var asCognitoUser = function asCognitoUser(session) {
-  var poolUrl = "".concat(_cognitoConfig.cognitoConfig.getConfig().url, "/").concat(_cognitoConfig.cognitoConfig.getConfig().uesrPoolId);
+  var poolUrl = "".concat(_cognitoConfig.cognitoConfig.getConfig().url, "/").concat(_cognitoConfig.cognitoConfig.getConfig().userPoolId);
   var credentials = new _awsSdk.CognitoIdentityCredentials({
     Logins: _defineProperty({}, poolUrl, session.idToken.jwtToken)
   });
   var cu = {};
-  cu.id = session.idToken.payload["cognito:username"];
-  cu.email = session.idToken.payload.email;
-  cu.firstname = session.idToken.payload["given_name"];
-  cu.lastname = session.idToken.payload["family_name"];
+
+  for (var prop in session.idToken.payload) {
+    cu[prop] = session.idToken.payload[prop];
+  } // should we allow developer to do custom mapping?
+
+
   cu.credentials = credentials;
   return cu;
 };
