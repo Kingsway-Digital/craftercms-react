@@ -70,9 +70,9 @@ function CognitoLoginCallback(props) {
       parseCognitoCallbackUrl(window.location.href).then(function (session) {
         // console.debug("Parsed callback got cognitoSession", session);
         setCognitoSession(session);
-        var cu = asCognitoUser(session);
+        var appUser = asAppUser(session);
         update({
-          user: cu
+          user: appUser
         });
         (0, _Spa.setBearerTokenInCrafterClient)(session.idToken.jwtToken);
         setLoading(false);
@@ -139,7 +139,8 @@ function CognitoLogoutCallback(props) {
 
 function CognitoUserRequired(props) {
   ensureConfigured();
-  var children = props.children;
+  var children = props.children,
+      fallback = props.fallback;
 
   var _useState9 = (0, _react.useState)(null),
       _useState10 = _slicedToArray(_useState9, 2),
@@ -151,19 +152,28 @@ function CognitoUserRequired(props) {
       user = _useGlobalContext6[0].user,
       update = _useGlobalContext6[1];
 
+  var _useState11 = (0, _react.useState)(false),
+      _useState12 = _slicedToArray(_useState11, 2),
+      isLoggedIn = _useState12[0],
+      setIsLoggedIn = _useState12[1];
+
   (0, _react.useEffect)(function () {
-    if (!user) {
-      getCognitoUser().then(function (cu) {
+    if (user) {
+      setIsLoggedIn(true);
+    } else {
+      getAppUser().then(function (cu) {
         update({
           user: cu
         });
         (0, _Spa.setBearerTokenInCrafterClient)(session.idToken.jwtToken);
+        setIsLoggedIn(true);
       })["catch"](function (e) {
-        console.error("Failed to locate user: " + e);
+        // console.debug("Did not locate user (" + e + ")");
+        setIsLoggedIn(false);
       });
     }
   }, [user, _cognitoConfig.cognitoConfig]);
-  return user ? children : null;
+  return isLoggedIn ? children : fallback;
 }
 
 var getCognitoSignInUri = function getCognitoSignInUri() {
@@ -211,15 +221,11 @@ var createCognitoAuth = function createCognitoAuth() {
   return auth;
 };
 
-var createCognitoUserPool = function createCognitoUserPool() {
-  return new _amazonCognitoIdentityJs.CognitoUserPool({
+var createCognitoUser = function createCognitoUser() {
+  var pool = new _amazonCognitoIdentityJs.CognitoUserPool({
     UserPoolId: _cognitoConfig.cognitoConfig.getConfig().userPoolId,
     ClientId: _cognitoConfig.cognitoConfig.getConfig().appClientId
   });
-};
-
-var createCognitoUser = function createCognitoUser() {
-  var pool = createCognitoUserPool();
   return pool.getCurrentUser();
 };
 
@@ -239,22 +245,25 @@ var parseCognitoCallbackUrl = function parseCognitoCallbackUrl(fullCallbackUrl) 
   });
 };
 
-var getCognitoUser = function getCognitoUser() {
+var getAppUser = function getAppUser() {
   return new Promise(function (resolve, reject) {
     var cognitoUser = createCognitoUser();
-    cognitoUser.getSession(function (error, session) {
-      if (error || !session) {
-        reject(new Error("Failure getting Cognito session: " + error));
-        return null;
-      } // console.debug("Retrieved user session:", session);
 
+    if (cognitoUser) {
+      cognitoUser.getSession(function (error, session) {
+        if (error || !session) {
+          reject(new Error("Failure getting Cognito session: " + error));
+        }
 
-      resolve(asCognitoUser(session));
-    });
+        resolve(asAppUser(session));
+      });
+    } else {
+      reject("User not logged in");
+    }
   });
 };
 
-var asCognitoUser = function asCognitoUser(session) {
+var asAppUser = function asAppUser(session) {
   var poolUrl = "".concat(_cognitoConfig.cognitoConfig.getConfig().url, "/").concat(_cognitoConfig.cognitoConfig.getConfig().userPoolId);
   var credentials = new _awsSdk.CognitoIdentityCredentials({
     Logins: _defineProperty({}, poolUrl, session.idToken.jwtToken)
