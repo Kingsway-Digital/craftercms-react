@@ -23,8 +23,8 @@ export function CognitoLoginCallback(props) {
         .then((session) => {
           // console.debug("Parsed callback got cognitoSession", session);
           setCognitoSession(session);
-          const cu = asCognitoUser(session);
-          update({ user: cu });
+          const appUser = asAppUser(session);
+          update({ user: appUser });
           setBearerTokenInCrafterClient(session.idToken.jwtToken);
           setLoading(false);
         })
@@ -74,22 +74,27 @@ export function CognitoLogoutCallback(props) {
 
 export function CognitoUserRequired(props) {
   ensureConfigured();
-  const { children } = props;
+  const { children, fallback } = props;
   const [cognitoSession, setCognitoSession] = useState(null);
   const [{ user }, update] = useGlobalContext();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   useEffect(() => {
-    if (!user) {
-      getCognitoUser()
+    if (user) {
+      setIsLoggedIn(true);
+    } else {
+      getAppUser()
         .then((cu) => {
           update({ user: cu });
           setBearerTokenInCrafterClient(session.idToken.jwtToken);
+          setIsLoggedIn(true);
         })
         .catch((e) => {
-          console.error("Failed to locate user: " + e);
+          // console.debug("Did not locate user (" + e + ")");
+          setIsLoggedIn(false);
         });
     }
   }, [user, configuration]);
-  return user ? children : null;
+  return isLoggedIn ? children : fallback;
 }
 
 export const getCognitoSignInUri = () => {
@@ -143,14 +148,11 @@ const createCognitoAuth = () => {
   return auth;
 };
 
-const createCognitoUserPool = () =>
-  new CognitoUserPool({
+const createCognitoUser = () => {
+  const pool = new CognitoUserPool({
     UserPoolId: configuration.getConfig().userPoolId,
     ClientId: configuration.getConfig().appClientId,
   });
-
-const createCognitoUser = () => {
-  const pool = createCognitoUserPool();
   return pool.getCurrentUser();
 };
 
@@ -171,22 +173,24 @@ const parseCognitoCallbackUrl = (fullCallbackUrl) => {
   });
 };
 
-const getCognitoUser = () => {
+const getAppUser = () => {
   return new Promise((resolve, reject) => {
     const cognitoUser = createCognitoUser();
-    cognitoUser.getSession((error, session) => {
-      if (error || !session) {
-        reject(new Error("Failure getting Cognito session: " + error));
-        return null;
-      }
+    if (cognitoUser) {
+      cognitoUser.getSession((error, session) => {
+        if (error || !session) {
+          reject(new Error("Failure getting Cognito session: " + error));
+        }
 
-      // console.debug("Retrieved user session:", session);
-      resolve(asCognitoUser(session));
-    });
+        resolve(asAppUser(session));
+      });
+    } else {
+      reject("User not logged in");
+    }
   });
 };
 
-const asCognitoUser = (session) => {
+const asAppUser = (session) => {
   const poolUrl = `${configuration.getConfig().url}/${
     configuration.getConfig().userPoolId
   }`;
