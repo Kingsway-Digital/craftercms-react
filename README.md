@@ -287,9 +287,9 @@ Example usage:
 
 ```javascript
 <Route exact path={"/signout"}>
-  <LogoutCallback>
-    <Redirect to={"/"} />
-  </LogoutCallback>
+  <CognitoLogoutCallback
+    onSuccessInclude={<Redirect to={"/"} />}
+    onLoadInclude={<CircularProgress/>} />
 </Route>
 ```
 

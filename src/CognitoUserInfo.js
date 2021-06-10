@@ -36,12 +36,12 @@ export function CognitoLoginCallback(props) {
   }, []);
 
   if (loading) {
-    return onLoadInclude ? onLoadInclude : "";
+    return onLoadInclude ? onLoadInclude : null;
   } else {
     if (cognitoSession) {
-      return onSuccessInclude;
+      return onSuccessInclude ? onSuccessInclude : null;
     } else {
-      return onFailureInclude;
+      return onFailureInclude ? onFailureInclude : null;
     }
   }
 }
@@ -61,13 +61,13 @@ export function CognitoLogoutCallback(props) {
   }, [user, loading]);
 
   if (loading) {
-    return onLoadInclude ? onLoadInclude : "";
+    return onLoadInclude ? onLoadInclude : null;
   } else {
     if (error) {
       console.error("Failure in CognitoLogoutCallback", error);
-      return onFailureInclude;
+      return onFailureInclude ? onFailureInclude : null;
     } else {
-      return onSuccessInclude;
+      return onSuccessInclude ? onSuccessInclude : null;
     }
   }
 }
