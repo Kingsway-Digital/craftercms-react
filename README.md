@@ -243,38 +243,12 @@ Example usage:
 
 ```javascript
 <Route exact path={"/callback"}>
-  <LoginCallback />
+  <CognitoLoginCallback
+    onSuccessInclude={<Redirect to={"/home"} />}
+    onFailureInclude={<SplashLayout><Splash/></SplashLayout>}
+    onLoadInclude={<CircularProgress />}
+  />
 </Route>
-```
-
-such that `LoginCallback` looks like this:
-
-```javascript
-import React from "react";
-import { CognitoLoginCallback } from "@kingsway/craftercms-react";
-import Layout from "./Layout";
-import Home from "../components/homepage/Home";
-import SplashLayout from "./SplashLayout";
-import Splash from "../components/splashpage/Splash";
-import { CircularProgress } from "@material-ui/core";
-
-export default function LoginCallback() {
-  return (
-    <CognitoLoginCallback
-      onSuccessInclude={
-        <Layout>
-          <Home />
-        </Layout>
-      }
-      onFailureInclude={
-        <SplashLayout>
-          <Splash />
-        </SplashLayout>
-      }
-      onLoadInclude={<CircularProgress />}
-    />
-  );
-}
 ```
 
 ### Component: CognitoLogoutCallback
@@ -287,27 +261,10 @@ Example usage:
 
 ```javascript
 <Route exact path={"/signout"}>
-  <LogoutCallback>
-    <Redirect to={"/"} />
-  </LogoutCallback>
+  <CognitoLogoutCallback
+    onSuccessInclude={<Redirect to={"/"} />}
+    onLoadInclude={<CircularProgress/>} />
 </Route>
-```
-
-```javascript
-import React from "react";
-import { CognitoLogoutCallback } from "@kingsway/craftercms-react";
-import { CircularProgress } from "@material-ui/core";
-
-export default function LogoutCallback(props) {
-  const { children } = props;
-  return (
-    <CognitoLogoutCallback
-      onSuccessInclude={children}
-      onFailureInclude={children}
-      onLoadInclude={<CircularProgress />}
-    />
-  );
-}
 ```
 
 ### Component: CognitoUserRequired
