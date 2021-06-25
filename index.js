@@ -9,6 +9,12 @@ Object.defineProperty(exports, "Spa", {
     return _Spa.Spa;
   }
 });
+Object.defineProperty(exports, "crafterUrl", {
+  enumerable: true,
+  get: function get() {
+    return _Spa.crafterUrl;
+  }
+});
 Object.defineProperty(exports, "GlobalContextProvider", {
   enumerable: true,
   get: function get() {
@@ -57,6 +63,12 @@ Object.defineProperty(exports, "getCognitoSignOutUri", {
     return _CognitoUserInfo.getCognitoSignOutUri;
   }
 });
+Object.defineProperty(exports, "getCognitoIdToken", {
+  enumerable: true,
+  get: function get() {
+    return _CognitoUserInfo.getCognitoIdToken;
+  }
+});
 Object.defineProperty(exports, "cognitoConfig", {
   enumerable: true,
   get: function get() {
@@ -67,18 +79,6 @@ Object.defineProperty(exports, "IceSupport", {
   enumerable: true,
   get: function get() {
     return _IceSupport.IceSupport;
-  }
-});
-Object.defineProperty(exports, "usePencil", {
-  enumerable: true,
-  get: function get() {
-    return _IceSupport.usePencil;
-  }
-});
-Object.defineProperty(exports, "useDnD", {
-  enumerable: true,
-  get: function get() {
-    return _IceSupport.useDnD;
   }
 });
 Object.defineProperty(exports, "useIceAllowed", {
