@@ -63,10 +63,10 @@ Object.defineProperty(exports, "getCognitoSignOutUri", {
     return _CognitoUserInfo.getCognitoSignOutUri;
   }
 });
-Object.defineProperty(exports, "getCognitoIdToken", {
+Object.defineProperty(exports, "useCognitoIdToken", {
   enumerable: true,
   get: function get() {
-    return _CognitoUserInfo.getCognitoIdToken;
+    return _CognitoUserInfo.useCognitoIdToken;
   }
 });
 Object.defineProperty(exports, "cognitoConfig", {
