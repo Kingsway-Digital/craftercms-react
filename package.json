@@ -26,10 +26,10 @@
   },
   "homepage": "https://github.com/Kingsway-Digital/craftercms-react#readme",
   "devDependencies": {
-    "@babel/cli": "^7.14.3",
-    "@babel/core": "^7.14.3",
-    "@babel/preset-env": "^7.14.4",
-    "@babel/preset-react": "^7.13.13",
+    "@babel/cli": "^7.14.5",
+    "@babel/core": "^7.14.6",
+    "@babel/preset-env": "^7.14.7",
+    "@babel/preset-react": "^7.14.5",
     "rimraf": "^3.0.2"
   },
   "dependencies": {
