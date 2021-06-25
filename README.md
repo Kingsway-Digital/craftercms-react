@@ -375,6 +375,27 @@ import {getCognitoSignUpUri} from "@kingsway/craftercms-react"
 
 ```
 
+### getCognitoIdToken
+
+This function returns the Cognito id token, if the user is logged in. This can be very convenient when necessary to set an Authorization header containing a valid bearer token.
+
+Typical usage:
+```javascript
+import {getCognitoIdToken} from "@kingsway/craftercms-react"
+...
+  const idToken = getCognitoIdToken()
+...
+      if (idToken) {
+        headers.Authorization = 'Bearer ' + idToken
+      }
+      fetch(url, {
+        method: 'GET',
+        headers: headers
+      })
+        .then(response => {
+...
+```
+
 ## Feedback Welcome
 
 This component is currently in active development and feedback is welcome in the git repository.
