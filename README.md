@@ -1,10 +1,8 @@
-# @kingsway/craftercms-react
+# React Tools for Crafter CMS
 
-## Convenient React utilities for working with Crafter CMS
-
-This package contains convenience utilities
-for working with Crafter CMS, over and above
-the SDK provided by Crafter.
+This package contains convenience utilities for working with Crafter CMS, over and above
+the SDK provided by Crafter. It is designed to significantly reduce boilerplace code and
+to accelerate development of React apps backed by Crafter CMS.
 
 ## Contents
 
@@ -25,7 +23,7 @@ the SDK provided by Crafter.
   - [getCognitoSignInUri](#getcognitosigninuri)
   - [getCognitoSignUpUri](#getcognitosignupuri)
   - [getCognitoSignOutUri](#getcognitosignouturi)
-  - [getCognitoIdToken](#getcognitoidtoken)
+  - [useCognitoIdToken](#useCognitoIdToken)
 - [Feedback](#feedback-welcome)
 - [Development Support](#development-support)
 
@@ -33,7 +31,7 @@ the SDK provided by Crafter.
 
 This is a new package under active development.
 
-It is designed to work with Crafter CMS version 3.1.12 or later.  For a complete list of library dependencies, see the `package.json` file.
+It is designed to work with Crafter CMS version 3.1.12 or later. For a complete list of library dependencies, see the `package.json` file.
 
 Development and compatibility follow the conventions of [semantic versioning](https://semver.org).
 
@@ -219,7 +217,7 @@ update({
 
 ### AWS Cognito Login Configuration
 
-This feature exposes several components: `CognitoLoginCallback`, `CognitoLogoutCallback`, and `CognitoUserRequired`. In addition, it exposes four convenience functions: `getCognitoSignInUri`, `getCognitoSignUpUri`, `getCognitoSignOutUri`, and `getCognitoIdToken`.
+This feature exposes several components: `CognitoLoginCallback`, `CognitoLogoutCallback`, and `CognitoUserRequired`. In addition, it exposes four convenience functions: `getCognitoSignInUri`, `getCognitoSignUpUri`, `getCognitoSignOutUri`, and `useCognitoIdToken`.
 
 These components simplify the work required to work with Cognito inside a react app running on Crafter CMS, by encapsulating boilerplate Cognito SDK code into convenient react components.
 
@@ -424,16 +422,16 @@ import {getCognitoSignUpUri} from "@kingsway/craftercms-react"
 
 ```
 
-### getCognitoIdToken
+### useCognitoIdToken
 
-This function returns the Cognito id token, if the user is logged in. This can be very convenient when necessary to set an Authorization header containing a valid bearer token.
+This hook returns the Cognito id token, if the user is logged in. This can be very convenient when necessary to set an Authorization header containing a valid bearer token.
 
 Typical usage:
 
 ```javascript
-import {getCognitoIdToken} from "@kingsway/craftercms-react"
+import {useCognitoIdToken} from "@kingsway/craftercms-react"
 ...
-  const idToken = getCognitoIdToken()
+  const idToken = useCognitoIdToken()
 ...
       if (idToken) {
         headers.Authorization = 'Bearer ' + idToken

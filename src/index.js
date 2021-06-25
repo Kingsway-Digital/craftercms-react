@@ -7,7 +7,7 @@ export {
   getCognitoSignInUri,
   getCognitoSignUpUri,
   getCognitoSignOutUri,
-  getCognitoIdToken,
+  useCognitoIdToken,
 } from "./CognitoUserInfo";
 export { cognitoConfig } from "./cognitoConfig.js";
 export { IceSupport, useIceAllowed } from "./IceSupport";

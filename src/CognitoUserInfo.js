@@ -122,7 +122,7 @@ export const getCognitoSignOutUri = () => {
   }&logout_uri=${base() + configuration.getConfig().signoutPath}`;
 };
 
-export const getCognitoIdToken = () => {
+export const useCognitoIdToken = () => {
   const [{ user }] = useGlobalContext();
 
   ensureConfigured();
