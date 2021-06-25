@@ -56,6 +56,18 @@ export const clearBearerTokenInCrafterClient = () => {
   crafterConf.configure({ headers: { Authentication: "" } });
 };
 
+export const crafterUrl = (url) => {
+  if (!url) return null;
+  const hasQry = url.indexOf("?") > -1;
+  return (
+    crafterConfig.baseUrl +
+    url +
+    (hasQry ? "&" : "?") +
+    "crafterSite=" +
+    crafterConfig.site
+  );
+};
+
 /**
  * Grabs the param from the dataset attribute in the specified
  * element ID and returns it.

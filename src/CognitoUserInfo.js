@@ -122,6 +122,24 @@ export const getCognitoSignOutUri = () => {
   }&logout_uri=${base() + configuration.getConfig().signoutPath}`;
 };
 
+export const getCognitoIdToken = () => {
+  const [{ user }] = useGlobalContext();
+
+  ensureConfigured();
+  const loginKey =
+    configuration.getConfig().url + "/" + configuration.getConfig().userPoolId;
+
+  if (
+    !user ||
+    !user.credentials ||
+    !user.credentials.params ||
+    !user.credentials.params.Logins
+  )
+    return null;
+  const idToken = user.credentials.params.Logins[loginKey];
+  return idToken;
+};
+
 const ensureConfigured = () => {
   if (configuration.isConfigured()) return;
   throw Error("Cognito settings not configured");

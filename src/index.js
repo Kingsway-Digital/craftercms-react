@@ -1,4 +1,4 @@
-export { Spa } from "./Spa";
+export { Spa, crafterUrl } from "./Spa";
 export { GlobalContextProvider, useGlobalContext } from "./GlobalContext";
 export {
   CognitoLoginCallback,
@@ -7,6 +7,7 @@ export {
   getCognitoSignInUri,
   getCognitoSignUpUri,
   getCognitoSignOutUri,
+  getCognitoIdToken,
 } from "./CognitoUserInfo";
 export { cognitoConfig } from "./cognitoConfig.js";
-export { IceSupport, usePencil, useDnD, useIceAllowed } from "./IceSupport";
+export { IceSupport, useIceAllowed } from "./IceSupport";

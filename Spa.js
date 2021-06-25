@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.clearBearerTokenInCrafterClient = exports.setBearerTokenInCrafterClient = exports.Spa = exports.getCrafterBaseUrl = exports.getCrafterSite = void 0;
+exports.crafterUrl = exports.clearBearerTokenInCrafterClient = exports.setBearerTokenInCrafterClient = exports.Spa = exports.getCrafterBaseUrl = exports.getCrafterSite = void 0;
 
 var _classes = require("@craftercms/classes");
 
@@ -81,6 +81,14 @@ var clearBearerTokenInCrafterClient = function clearBearerTokenInCrafterClient()
     }
   });
 };
+
+exports.clearBearerTokenInCrafterClient = clearBearerTokenInCrafterClient;
+
+var crafterUrl = function crafterUrl(url) {
+  if (!url) return null;
+  var hasQry = url.indexOf("?") > -1;
+  return crafterConfig.baseUrl + url + (hasQry ? "&" : "?") + "crafterSite=" + crafterConfig.site;
+};
 /**
  * Grabs the param from the dataset attribute in the specified
  * element ID and returns it.
@@ -106,7 +114,7 @@ var clearBearerTokenInCrafterClient = function clearBearerTokenInCrafterClient()
  */
 
 
-exports.clearBearerTokenInCrafterClient = clearBearerTokenInCrafterClient;
+exports.crafterUrl = crafterUrl;
 
 function extractConfigFromFreemarker(param, elementId) {
   var theElement = document.getElementById(elementId);

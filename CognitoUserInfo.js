@@ -8,7 +8,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.CognitoLoginCallback = CognitoLoginCallback;
 exports.CognitoLogoutCallback = CognitoLogoutCallback;
 exports.CognitoUserRequired = CognitoUserRequired;
-exports.getCognitoSignOutUri = exports.getCognitoSignUpUri = exports.getCognitoSignInUri = void 0;
+exports.getCognitoIdToken = exports.getCognitoSignOutUri = exports.getCognitoSignUpUri = exports.getCognitoSignInUri = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
@@ -196,6 +196,22 @@ var getCognitoSignOutUri = function getCognitoSignOutUri() {
 };
 
 exports.getCognitoSignOutUri = getCognitoSignOutUri;
+
+var getCognitoIdToken = function getCognitoIdToken() {
+  var _useGlobalContext7 = (0, _GlobalContext.useGlobalContext)(),
+      _useGlobalContext8 = _slicedToArray(_useGlobalContext7, 1),
+      user = _useGlobalContext8[0].user;
+
+  ensureConfigured();
+
+  var loginKey = _cognitoConfig.cognitoConfig.getConfig().url + "/" + _cognitoConfig.cognitoConfig.getConfig().userPoolId;
+
+  if (!user || !user.credentials || !user.credentials.params || !user.credentials.params.Logins) return null;
+  var idToken = user.credentials.params.Logins[loginKey];
+  return idToken;
+};
+
+exports.getCognitoIdToken = getCognitoIdToken;
 
 var ensureConfigured = function ensureConfigured() {
   if (_cognitoConfig.cognitoConfig.isConfigured()) return;

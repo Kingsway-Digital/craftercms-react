@@ -1,13 +1,41 @@
 # @kingsway/craftercms-react
 
-Convenient React utilities for working with Crafter CMS
+## Convenient React utilities for working with Crafter CMS
 
 This package contains convenience utilities
 for working with Crafter CMS, over and above
 the SDK provided by Crafter.
 
-This is a very new package. More items will be
-added over time.
+## Contents
+
+- [Installation](#installation)
+- [Compatibility](#compatibility)
+- General Single Page Application Support
+  - [SPA Component](#component-spa)
+  - [crafterUrl Utility Function](#function-crafterurl)
+  - [GlobalContextProvider](#component-globalcontextprovider)
+- Crafter In-Context Editor Support
+  - [IceSupport component](#component-icesupport)
+  - [useIceAllowed](#useiceallowed)
+- Cognito Authentication Support
+  - [Configuration](#aws-cognito-login-configuration)
+  - [Login Callback](#component-cognitologincallback)
+  - [Logout Callback](#component-cognitologoutcallback)
+  - [CognitoUserRequired Component](#component-cognitouserrequired)
+  - [getCognitoSignInUri](#getcognitosigninuri)
+  - [getCognitoSignUpUri](#getcognitosignupuri)
+  - [getCognitoSignOutUri](#getcognitosignouturi)
+  - [getCognitoIdToken](#getcognitoidtoken)
+- [Feedback](#feedback-welcome)
+- [Development Support](#development-support)
+
+## Compatibility
+
+This is a new package under active development.
+
+It is designed to work with Crafter CMS version 3.1.12 or later.  For a complete list of library dependencies, see the `package.json` file.
+
+Development and compatibility follow the conventions of [semantic versioning](https://semver.org).
 
 ## Installation
 
@@ -75,6 +103,20 @@ ReactDOM.render(
 
 where `<App>` is the root component of your application.
 
+### Function: crafterUrl
+
+This function adds the `crafterConfig.baseUrl` prefix and `crafterSite={crafterConfig.site}` query parameter to the provided input URL.
+
+Usage:
+
+```javascript
+import {crafterUrl} from "@kingsway/craftercms-react"
+...
+  const url = crafterUrl("/api/1/services/my/cool/service.json")
+...
+  const img = crafterUrl("/static-assets/content/a-nifty-image.png")
+```
+
 ### Component: IceSupport
 
 This component initializes Crafter CMS's in-context editing tools and provides convenient hooks that facilitate component development.
@@ -103,7 +145,9 @@ ReactDOM.render(
 );
 ```
 
-Typical usage:
+### useIceAllowed
+
+Given the above setup, typical usage of 'useIceAllowed':
 
 ```javascript
 const useIce = useIceAllowed();
@@ -175,7 +219,7 @@ update({
 
 ### AWS Cognito Login Configuration
 
-This feature exposes several components: `CognitoLoginCallback`, `CognitoLogoutCallback`, and `CognitoUserRequired`. In addition, it exposes three convenience functions: `getCognitoSignInUri`, `getCognitoSignUpUri`, and `getCognitoSignOutUri`.
+This feature exposes several components: `CognitoLoginCallback`, `CognitoLogoutCallback`, and `CognitoUserRequired`. In addition, it exposes four convenience functions: `getCognitoSignInUri`, `getCognitoSignUpUri`, `getCognitoSignOutUri`, and `getCognitoIdToken`.
 
 These components simplify the work required to work with Cognito inside a react app running on Crafter CMS, by encapsulating boilerplate Cognito SDK code into convenient react components.
 
@@ -245,7 +289,11 @@ Example usage:
 <Route exact path={"/callback"}>
   <CognitoLoginCallback
     onSuccessInclude={<Redirect to={"/home"} />}
-    onFailureInclude={<SplashLayout><Splash/></SplashLayout>}
+    onFailureInclude={
+      <SplashLayout>
+        <Splash />
+      </SplashLayout>
+    }
     onLoadInclude={<CircularProgress />}
   />
 </Route>
@@ -263,7 +311,8 @@ Example usage:
 <Route exact path={"/signout"}>
   <CognitoLogoutCallback
     onSuccessInclude={<Redirect to={"/"} />}
-    onLoadInclude={<CircularProgress/>} />
+    onLoadInclude={<CircularProgress />}
+  />
 </Route>
 ```
 
@@ -373,6 +422,28 @@ import {getCognitoSignUpUri} from "@kingsway/craftercms-react"
     window.location = getCognitoSignUpUri()
   }}>Create Account</Button>
 
+```
+
+### getCognitoIdToken
+
+This function returns the Cognito id token, if the user is logged in. This can be very convenient when necessary to set an Authorization header containing a valid bearer token.
+
+Typical usage:
+
+```javascript
+import {getCognitoIdToken} from "@kingsway/craftercms-react"
+...
+  const idToken = getCognitoIdToken()
+...
+      if (idToken) {
+        headers.Authorization = 'Bearer ' + idToken
+      }
+      fetch(url, {
+        method: 'GET',
+        headers: headers
+      })
+        .then(response => {
+...
 ```
 
 ## Feedback Welcome
