@@ -1,17 +1,15 @@
 # @kingsway/craftercms-react
 
-Convenient React utilities for working with Crafter CMS
+## Convenient React utilities for working with Crafter CMS
 
 This package contains convenience utilities
 for working with Crafter CMS, over and above
 the SDK provided by Crafter.
 
-This is a very new package. More items will be
-added over time.
-
 ## Contents
 
 - [Installation](#installation)
+- [Compatibility](#compatibility)
 - General Single Page Application Support
   - [SPA Component](#component-spa)
   - [crafterUrl Utility Function](#function-crafterurl)
@@ -30,6 +28,14 @@ added over time.
   - [getCognitoIdToken](#getcognitoidtoken)
 - [Feedback](#feedback-welcome)
 - [Development Support](#development-support)
+
+## Compatibility
+
+This is a new package under active development.
+
+It is designed to work with Crafter CMS version 3.1.12 or later.  For a complete list of library dependencies, see the `package.json` file.
+
+Development and compatibility follow the conventions of [semantic versioning](https://semver.org).
 
 ## Installation
 
