@@ -1,10 +1,8 @@
-# @kingsway/craftercms-react
+# React Tools for Crafter CMS
 
-## Convenient React utilities for working with Crafter CMS
-
-This package contains convenience utilities
-for working with Crafter CMS, over and above
-the SDK provided by Crafter.
+This package contains convenience utilities for working with Crafter CMS, over and above
+the SDK provided by Crafter. It is designed to significantly reduce boilerplace code and
+to accelerate development of React apps backed by Crafter CMS.
 
 ## Contents
 
@@ -33,7 +31,7 @@ the SDK provided by Crafter.
 
 This is a new package under active development.
 
-It is designed to work with Crafter CMS version 3.1.12 or later.  For a complete list of library dependencies, see the `package.json` file.
+It is designed to work with Crafter CMS version 3.1.12 or later. For a complete list of library dependencies, see the `package.json` file.
 
 Development and compatibility follow the conventions of [semantic versioning](https://semver.org).
 
